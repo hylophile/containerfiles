@@ -1,0 +1,18 @@
+FROM archlinux:base-devel
+
+
+RUN pacman -Sy --noconfirm git sudo
+RUN useradd build
+RUN echo 'build ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+RUN mkdir -p /home/build
+RUN chown build:build /home/build
+USER build
+WORKDIR /home/build
+RUN git clone https://aur.archlinux.org/yay-bin.git
+WORKDIR /home/build/yay-bin
+RUN makepkg -si --noconfirm
+
+USER root
+RUN printf 'Color\nILoveCandy\nParallelDownloads = 5\n' >> /etc/pacman.conf
+
+RUN pacman -Sy --noconfirm direnv bat lsd fish zoxide
