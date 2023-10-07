@@ -1,4 +1,4 @@
-FROM ghcr.io/rust-lang/rust:nightly as build
+FROM ghcr.io/rust-lang/rust:nightly AS build
 MAINTAINER hylo <hylo@posteo.de>
 
 RUN apt-get update && apt-get install -y \
@@ -18,6 +18,9 @@ WORKDIR /eww
 RUN cargo fetch
 RUN cargo build --release --no-default-features --features=wayland
 
-FROM ghcr.io/distroless/static
-COPY --from=build /eww/target/release/eww /usr/local/bin/eww
-ENTRYPOINT [ "/usr/local/bin/eww" ]
+# FROM ghcr.io/distroless/static
+# COPY --from=build /eww/target/release/eww /usr/local/bin/eww
+# ENTRYPOINT [ "/usr/local/bin/eww" ]
+
+FROM scratch
+COPY --from=build /eww/target/release/eww /eww
