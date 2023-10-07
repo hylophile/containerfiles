@@ -3,7 +3,7 @@ name: Build {{name}}
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - .github/workflows/{{name}}.yml
       - {{name}}/**
