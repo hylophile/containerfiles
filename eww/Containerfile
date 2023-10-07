@@ -18,6 +18,7 @@ WORKDIR /eww
 RUN cargo fetch
 RUN cargo build --release --no-default-features --features=wayland
 
+
 FROM ghcr.io/distroless/static
 COPY --from=build /eww/target/release/eww /usr/local/bin/eww
 ENTRYPOINT [ "/usr/local/bin/eww" ]
