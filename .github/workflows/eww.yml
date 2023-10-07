@@ -2,11 +2,11 @@ name: Build eww
 
 on:
   push:
-    branches:
-      - master
-    paths:
-      - .github/workflows/eww.yml
-      - eww/**
+    # branches:
+    #   - master
+    # paths:
+    #   - .github/workflows/eww.yml
+    #   - eww/**
 
 env:
   IMAGE_NAME: eww
