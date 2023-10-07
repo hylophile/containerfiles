@@ -1,0 +1,23 @@
+FROM ghcr.io/rust-lang/rust:nightly as build
+MAINTAINER hylo <hylo@posteo.de>
+
+RUN apt-get update && apt-get install -y \
+    git \
+    pkg-config \
+    libglib2.0-dev \
+    libatk1.0-dev \
+    libgtk-3-dev \
+    libdbusmenu-glib-dev \
+    libdbusmenu-gtk3-dev \
+    libgtk-layer-shell-dev
+
+RUN git clone https://github.com/hylophile/eww --branch dynamic-icons
+
+WORKDIR /eww
+
+RUN cargo fetch
+RUN cargo build --release --no-default-features --features=wayland
+
+FROM ghcr.io/distroless/static
+COPY --from=build /eww/target/release/eww /usr/local/bin/eww
+ENTRYPOINT [ "/usr/local/bin/eww" ]
